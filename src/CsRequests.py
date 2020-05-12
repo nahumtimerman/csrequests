@@ -30,9 +30,9 @@ class CsRequests(object):
         :type reservation_id: str
         :return: reservation details
         """
-        data = {'reservation_id': reservation_id}
+        data = {'SandboxId': reservation_id}
         headers = {"Authorization": "Bearer " + self.token}
-        response = requests.get(self.host_url + '/sandbox/GetReservationDetails', data=data, headers=headers)
+        response = requests.get(self.host_url + '/Sandbox/GetReservationDetailsNextGen', data=data, headers=headers)
         if response.ok:
             reservation_details = json.loads(response.text)
         else:
