@@ -29,7 +29,7 @@ class CsRequests(object):
         """
         data = {'SandboxId': reservation_id}
         headers = {"Authorization": "Bearer " + self.token}
-        response = requests.get(self.host_url + '/Sandbox/GetReservationDetailsNextGen', data=data, headers=headers)
+        response = requests.get(self.host_url + '/Api/Sandbox/GetReservationDetailsNextGen', data=data, headers=headers)
         if response.ok:
             reservation_details = json.loads(response.text)
         else:
