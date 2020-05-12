@@ -1,5 +1,4 @@
 import requests, json
-from retry import retry
 
 
 class CsRequests(object):
@@ -15,7 +14,6 @@ class CsRequests(object):
         self.token = self.logon(password, url, username, domain)
 
     @staticmethod
-    @retry(tries=5, jitter=1)
     def logon(password, url, username, domain):
         token = None
         data = {'username': username, 'password': password, "domain": domain}
@@ -24,7 +22,6 @@ class CsRequests(object):
             token = json.loads(response.text)
         return token
 
-    @retry(tries=3, delay=1)
     def get_reservation_details(self, reservation_id):
         """
         :type reservation_id: str
