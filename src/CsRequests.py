@@ -1,6 +1,7 @@
 import requests, json
 from retry import retry
 
+
 class CsRequests(object):
     def __init__(self, username='admin', password='admin', url='http://localhost:9000', domain='Global'):
         """
@@ -23,13 +24,15 @@ class CsRequests(object):
             token = json.loads(response.text)
         return token
 
+    @retry(tries=3, delay=1)
     def get_reservation_details(self, reservation_id):
         """
         :type reservation_id: str
         :return: reservation details
         """
-        data = { 'reservation_id': reservation_id, 'token': self.token}
-        response = requests.get(self.host_url + '/sandbox/GetReservationDetails', data=data)
+        data = {'reservation_id': reservation_id}
+        headers = {"Authorization": "Bearer " + self.token}
+        response = requests.get(self.host_url + '/sandbox/GetReservationDetails', data=data, headers=headers)
         if response.ok:
             reservation_details = json.loads(response.text)
         else:
