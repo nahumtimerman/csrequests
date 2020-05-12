@@ -1,11 +1,20 @@
 import requests, json
+from retry import retry
 
 class CsRequests(object):
     def __init__(self, username='admin', password='admin', url='http://localhost:9000', domain='Global'):
+        """
+        Logon to server and store token
+        :type username: str
+        :type password: str
+        :type url: str
+        :type domain: str
+        """
         self.host_url = url
         self.token = self.logon(password, url, username, domain)
 
     @staticmethod
+    @retry(tries=5, jitter=1)
     def logon(password, url, username, domain):
         token = None
         data = {'username': username, 'password': password, "domain": domain}
@@ -14,7 +23,11 @@ class CsRequests(object):
             token = json.loads(response.text)
         return token
 
-    def get_reservation_details(self, reservation_id:str):
+    def get_reservation_details(self, reservation_id):
+        """
+        :type reservation_id: str
+        :return: reservation details
+        """
         data = { 'reservation_id': reservation_id, 'token': self.token}
         response = requests.get(self.host_url + '/sandbox/GetReservationDetails', data=data)
         if response.ok:

@@ -9,3 +9,4 @@ class TestCsRequest(unittest.TestCase):
         session = CsRequests('admin', 'admin')
         details = session.get_reservation_details(str(uuid.UUID()))
         self.assertTrue(details.Name == 'bla')
+
